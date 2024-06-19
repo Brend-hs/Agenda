@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "300268086470",
+    "project_id": "agenda-app-586c4",
+    "storage_bucket": "agenda-app-586c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300268086470:android:647292a0ddaeab969823c7",
+        "android_client_info": {
+          "package_name": "com.example.agenda"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDn7VOaIhAjHX4oPKY6PcM1BlI6HyfU7nQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
