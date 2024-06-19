@@ -18,7 +18,7 @@ public class Pantalla_De_Carga extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_pantalla_de_carga);
 
-        int Tiempo = 3000;
+        int Tiempo = 4000;
 
         new Handler().postDelayed(new Runnable() {
             @Override
