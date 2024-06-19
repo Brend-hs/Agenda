@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Agenda</string>
+
+    <!--MAIN ACTIVITY-->
+    <string name="Btn_Login">LOGIN</string>
+    <string name="Btn_Registro">REGISTRO</string>
+
     <!--AGREGAR NOTA-->
     <string name="Uid_Usuario">Uid del usuario</string>
     <string name="Correo_Usuario">Correo de usuario</string>
