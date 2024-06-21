@@ -14,6 +14,13 @@
     <string name="RegistrarUsuario">Registrar</string>
     <string name="TengounacuentaTXT">Tengo una cuenta</string>
 
+    <!--ACTIVIDAD LOGIN-->
+    <string name="IniciarSesionTXT">Iniciar sesión</string>
+    <string name="CorreoLogin">Correo</string>
+    <string name="PassLogin">Conraseña</string>
+    <string name="Btn_Logeo">Ingresar</string>
+    <string name="UsuarioNuevoTXT">¿No tienes una cuenta? Regístrate</string>
+
     <!--AGREGAR NOTA-->
     <string name="Uid_Usuario">Uid del usuario</string>
     <string name="Correo_Usuario">Correo de usuario</string>
