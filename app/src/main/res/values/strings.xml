@@ -14,6 +14,9 @@
     <string name="RegistrarUsuario">Registrar</string>
     <string name="TengounacuentaTXT">Tengo una cuenta</string>
 
+    <!--MENÚ PRINCIPAL-->
+    <string name="CerrarSesion">Salir</string>
+
     <!--ACTIVIDAD LOGIN-->
     <string name="IniciarSesionTXT">Iniciar sesión</string>
     <string name="CorreoLogin">Correo</string>
