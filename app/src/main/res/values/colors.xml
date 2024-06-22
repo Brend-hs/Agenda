@@ -8,6 +8,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <!--Colores del estado-->
+    <color name="colorPendiente">#990000</color>
+    <color name="colorRealizado">#9ADE7B</color>
+    <color name="colorAplazado">#FFBB64</color>
+
     <color name="colorPrimary">#0081CF</color>
     <color name="colorPrimaryDark">#3E4756</color>
     <color name="colorPrimaryLight">#A1ACBD</color>

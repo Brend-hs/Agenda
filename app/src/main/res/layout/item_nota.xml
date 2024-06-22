@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardUseCompatPadding="true"
+    android:padding="0.2dp"
+    app:cardCornerRadius="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <!--ICONO-->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="start"
+                android:src="@drawable/icono_item"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginStart="7dp">
+
+            <!--Uid nota-->
+            <TextView
+                android:id="@+id/Id_nota_Item"
+                android:text="@string/Id_nota_Item"
+                android:visibility="gone"
+                android:fontFamily="@font/worksans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!--Uid del usuario-->
+            <TextView
+                android:id="@+id/Uid_Usuario_Item"
+                android:text="@string/Uid_Usuario_Item"
+                android:visibility="gone"
+                android:fontFamily="@font/worksans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!--Correo de usuario-->
+            <TextView
+                android:id="@+id/Correo_Usuario_Item"
+                android:text="@string/Correo_Usuario_Item"
+                android:visibility="gone"
+                android:fontFamily="@font/worksans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!--Fecha y hora de registro-->
+            <TextView
+                android:id="@+id/Fecha_hora_registro_Item"
+                android:text="@string/Fecha_hora_registro_Item"
+                android:visibility="gone"
+                android:fontFamily="@font/worksans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!--Titulo-->
+            <TextView
+                android:id="@+id/Titulo_Item"
+                android:text="@string/Titulo_Item"
+                android:fontFamily="@font/worksans"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!--Descripcion-->
+            <TextView
+                android:id="@+id/Descripcion_Item"
+                android:text="@string/Descripcion_Item"
+                android:textSize="18sp"
+                android:fontFamily="@font/worksans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!--Notificacion-->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/icono_notiicacion"/>
+
+                <TextView
+                    android:id="@+id/Notificacion_Item"
+                    android:text="@string/Notificacion_Item"
+                    android:textSize="15sp"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/worksans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <!--Fecha-->
+            <TextView
+                android:id="@+id/Fecha_Item"
+                android:text="@string/Fecha_Item"
+                android:visibility="gone"
+                android:fontFamily="@font/worksans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!--Hora-->
+            <TextView
+                android:id="@+id/Hora_Item"
+                android:text="@string/Hora_Item"
+                android:visibility="gone"
+                android:fontFamily="@font/worksans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!--Categoría-->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/icono_categoria"/>
+
+                <TextView
+                    android:id="@+id/Categoria_Item"
+                    android:text="@string/Categoria_Item"
+                    android:textSize="15sp"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/worksans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <!--Estado-->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/Estado_Item_TXT"
+                    android:text="@string/Estado_Item_TXT"
+                    android:fontFamily="@font/worksans"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/Estado_Item"
+                    android:text="@string/Estado_Item"
+                    android:fontFamily="@font/worksans"
+                    android:textColor="@color/white"
+                    android:background="@color/colorPendiente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:padding="2dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <!--Contacto-->
+
+            <!--Notificacion-->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/icono_contacto"
+                    app:tint="#1A59D8"/>
+
+                <TextView
+                    android:id="@+id/Contacto_Item"
+                    android:text="@string/Contacto_Item"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/worksans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="5dp"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.cardview.widget.CardView>

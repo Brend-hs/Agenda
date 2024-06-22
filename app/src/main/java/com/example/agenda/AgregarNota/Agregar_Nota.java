@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -73,15 +74,10 @@ public class Agregar_Nota extends AppCompatActivity {
         InicializarVariables();
         ObtenerDatos();
         Obtener_Fecha_Hora_Actual();
-        Establecer_Fecha();
-        Establecer_Hora();
         EstablecerNotificacion();
+        ObtenerOpcionNotificacion();
         EstabecerCategoria();
         Obtener_Contacto();
-
-        /*TO-DO:
-        * Poder añadir otra categoria
-        * Añadir contacto*/
     }
 
     private void InicializarVariables(){
@@ -134,7 +130,7 @@ public class Agregar_Nota extends AppCompatActivity {
         
         //Validar cada uno de los datos
         if(!uid_usuario.isEmpty() && !correo_usuario.isEmpty() && !fecha_hora_actual.isEmpty() && !titulo.isEmpty() &&
-                !descripcion.isEmpty() && !fecha.isEmpty() && !hora.isEmpty() && !notificacion.isEmpty() &&
+                !descripcion.isEmpty() && !notificacion.isEmpty() &&
                 !categoria.isEmpty() && !estado.isEmpty()){
             Nota nota = new Nota(correo_usuario+"/"+fecha_hora_actual,
                     uid_usuario,
@@ -257,6 +253,29 @@ public class Agregar_Nota extends AppCompatActivity {
                 R.array.Opciones_Notificacion, android.R.layout.simple_spinner_item);
         notificacionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SpinnerNotificacion.setAdapter(notificacionAdapter);
+    }
+
+    private void ObtenerOpcionNotificacion(){
+        SpinnerNotificacion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String opcion = SpinnerNotificacion.getSelectedItem().toString();
+                if(opcion.equals("Personalizado")){
+                    Btn_Calendario.setEnabled(true);
+                    Btn_Hora.setEnabled(true);
+                    Establecer_Fecha();
+                    Establecer_Hora();
+                }else{
+                    Btn_Calendario.setEnabled(false);
+                    Btn_Hora.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void EstabecerCategoria(){
