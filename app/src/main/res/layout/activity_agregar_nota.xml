@@ -61,6 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <!--FECHA-->
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,6 +88,7 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <!--HORA-->
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -153,10 +155,37 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <!--CONTACTO-->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <!--BOTON PARA ABRIR CONTACTOS-->
+            <Button
+                android:id="@+id/Btn_Contactos"
+                android:text="@string/Btn_Contactos"
+                app:icon="@drawable/icono_contacto"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"/>
+
+            <!--VISUALIZAR CONTACTO-->
+            <TextView
+                android:id="@+id/Contacto"
+                android:text="@string/Contacto"
+                android:textSize="20sp"
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/worksans"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
         <!--ESTADO DE LA NOTA-->
         <TextView
             android:id="@+id/Estado"
-            android:hint="@string/Estado"
+            android:text="@string/Estado"
             android:textSize="20sp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/worksans"
