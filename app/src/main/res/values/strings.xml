@@ -42,5 +42,26 @@
     <string name="Descripcion">Descripcion</string>
     <string name="Btn_Calendario">Calendario</string>
     <string name="Fecha">00/00/0000</string>
-    <string name="Estado">No finalizado</string>
+    <string name="Btn_Hora">Hora</string>
+    <string name="Hora">00:00</string>
+    <string name="Estado">Pendiente</string>
+
+    <!--ARRAY SPINNER NOTIFICACION-->
+    <string-array name="Opciones_Notificacion">
+        <item>10 minutos antes</item>
+        <item>1 día antes</item>
+        <item>Personalizado</item>
+        <item>Sin recordatorio</item>
+    </string-array>
+
+    <!--ARRAY SPINNER CATEGORÍAS-->
+    <string-array name="Opciones_Categoria">
+        <item>Personal</item>
+        <item>Trabajo</item>
+        <item>Familia</item>
+        <item>Otra</item>
+    </string-array>
+
+    <!--MENU-->
+    <string name="Agregar_Nota_BD">Agregar</string>
 </resources>
