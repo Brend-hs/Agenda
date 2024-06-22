@@ -21,6 +21,15 @@
         android:theme="@style/Theme.Agenda"
         tools:targetApi="31">
         <activity
+            android:name=".Perfil_Usuario"
+            android:exported="false" />
+        <activity
+            android:name=".NotasArchivadas.Notas_Archivadas"
+            android:exported="false" />
+        <activity
+            android:name=".ListarNotas.Listar_Notas"
+            android:exported="false" />
+        <activity
             android:name=".MenuPrincipal"
             android:exported="false" />
         <activity
