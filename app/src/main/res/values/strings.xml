@@ -81,4 +81,9 @@
     <string name="Estado_Item_TXT">Estado: </string>
     <string name="Estado_Item">Pendiente</string>
     <string name="Contacto_Item">00 0000 0000</string>
+
+    <!--CUADRO DE DIALOGO OPCIONES-->
+    <string name="ElijaOpcionTXT">Elija una opción</string>
+    <string name="CD_Eliminar">Eliminar</string>
+    <string name="CD_Actualizar">Modificar</string>
 </resources>
