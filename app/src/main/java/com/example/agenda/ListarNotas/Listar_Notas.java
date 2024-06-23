@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.agenda.Objetos.Nota;
 import com.example.agenda.R;
 import com.example.agenda.ViewHolder.ViewHolder_Nota;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +45,9 @@ public class Listar_Notas extends AppCompatActivity {
     FirebaseRecyclerOptions<Nota> options;
     Dialog dialog;
 
+    FirebaseAuth auth;
+    FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +67,9 @@ public class Listar_Notas extends AppCompatActivity {
         recyclerViewNotas = findViewById(R.id.recyclerViewNotas);
         recyclerViewNotas.setHasFixedSize(true); //Adapte su tamaño a los cmabios de la lista
 
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
         firebaseDatabase = FirebaseDatabase.getInstance();
         BASE_DE_DATOS = firebaseDatabase.getReference("Notas_Publicadas");
         dialog = new Dialog(Listar_Notas.this);
@@ -69,7 +77,9 @@ public class Listar_Notas extends AppCompatActivity {
     }
 
     private void ListarNotasUsuarios(){
-        options = new FirebaseRecyclerOptions.Builder<Nota>().setQuery(BASE_DE_DATOS,Nota.class).build();
+        //Consulta
+        Query query = BASE_DE_DATOS.orderByChild("uid_usuario").equalTo(user.getUid());
+        options = new FirebaseRecyclerOptions.Builder<Nota>().setQuery(query,Nota.class).build();
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Nota, ViewHolder_Nota>(options) {
             @Override
             protected void onBindViewHolder(@NonNull ViewHolder_Nota viewHolder_nota, int i, @NonNull Nota nota) {
