@@ -1,9 +1,13 @@
 package com.example.agenda.ListarNotas;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -19,10 +23,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.agenda.Objetos.Nota;
 import com.example.agenda.R;
 import com.example.agenda.ViewHolder.ViewHolder_Nota;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class Listar_Notas extends AppCompatActivity {
 
@@ -33,6 +41,7 @@ public class Listar_Notas extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     FirebaseRecyclerAdapter<Nota, ViewHolder_Nota> firebaseRecyclerAdapter;
     FirebaseRecyclerOptions<Nota> options;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +64,7 @@ public class Listar_Notas extends AppCompatActivity {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         BASE_DE_DATOS = firebaseDatabase.getReference("Notas_Publicadas");
+        dialog = new Dialog(Listar_Notas.this);
         ListarNotasUsuarios();
     }
 
@@ -92,7 +102,34 @@ public class Listar_Notas extends AppCompatActivity {
 
                     @Override
                     public void onItemLongClick(View view, int position) {
-                        Toast.makeText(Listar_Notas.this, "On item long Click", Toast.LENGTH_SHORT).show();
+                        String id_nota = getItem(position).getId_nota();
+
+                        //Declarar las vistas
+                        Button CD_Eliminar, CD_Actualizar;
+
+                        //Realizar la conexión con el diseño
+                        dialog.setContentView(R.layout.dialogo_opciones);
+
+                        //Inicializar las vistas
+                        CD_Eliminar = dialog.findViewById(R.id.CD_Eliminar);
+                        CD_Actualizar = dialog.findViewById(R.id.CD_Actualizar);
+
+                        CD_Eliminar.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                EliminarNota(id_nota);
+                                dialog.dismiss();
+                            }
+                        });
+
+                        CD_Actualizar.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(Listar_Notas.this, "Modificar nota", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
                     }
                 });
                 return viewHolder_nota;
@@ -105,6 +142,42 @@ public class Listar_Notas extends AppCompatActivity {
 
         recyclerViewNotas.setLayoutManager(linearLayoutManager);
         recyclerViewNotas.setAdapter(firebaseRecyclerAdapter);
+    }
+
+    private void EliminarNota(String idNota) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Listar_Notas.this);
+        builder.setTitle("Eliminar nota");
+        builder.setMessage("¿Desea eliminar la tarea?");
+        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Eliminar nota en la base de datos
+                Query query = BASE_DE_DATOS.orderByChild("id_nota").equalTo(idNota);
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot ds : snapshot.getChildren()){
+                            ds.getRef().removeValue();
+                        }
+                        Toast.makeText(Listar_Notas.this, "Tarea eliminada", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(Listar_Notas.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(Listar_Notas.this, "Cancelado por el usuario", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.create().show();
     }
 
     @Override
