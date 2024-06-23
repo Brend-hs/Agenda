@@ -28,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class MenuPrincipal extends AppCompatActivity {
     Button AgregarNotas, ListarNotas, Archivados, Perfil, AcercaDe, CerrarSesion;
     FirebaseAuth firebaseAuth;
@@ -40,6 +42,8 @@ public class MenuPrincipal extends AppCompatActivity {
     LinearLayoutCompat Linear_Nombres, Linear_Correo;
 
     DatabaseReference Usuarios;
+
+    ArrayList<String> categorias;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +89,7 @@ public class MenuPrincipal extends AppCompatActivity {
                 Intent intent = new Intent(MenuPrincipal.this, Agregar_Nota.class);
                 intent.putExtra("Uid",uid_usuario);
                 intent.putExtra("Correo",correo_usuario);
+                intent.putExtra("Categorias",categorias);
 
                 startActivity(intent);
             }
@@ -165,6 +170,7 @@ public class MenuPrincipal extends AppCompatActivity {
                     String uid= ""+snapshot.child("uid").getValue();
                     String nombres= ""+snapshot.child("nombre").getValue();
                     String correo=""+snapshot.child("correo").getValue();
+                    categorias = (ArrayList<String>) snapshot.child("categorias").getValue();
 
                     //Setear los datos en los respectivos texview
                     UidPrincipal.setText(uid);

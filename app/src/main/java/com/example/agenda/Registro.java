@@ -26,7 +26,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Registro extends AppCompatActivity {
     EditText NombreEt, CorreoEt, ContraseñaEt, ConfirmarContraseñaEt;
@@ -134,11 +136,17 @@ public class Registro extends AppCompatActivity {
         //Obtener la identidicación de usuario actual
         String uid = firebaseAuth.getUid();
 
-        HashMap<String,String> Datos = new HashMap<>();
+        ArrayList<String> categoria = new ArrayList<>();
+        categoria.add("Personal");
+        categoria.add("Trabajo");
+        categoria.add("Familia");
+
+        HashMap<String,Object> Datos = new HashMap<>();
         Datos.put("uid",uid);
         Datos.put("correo",correo);
         Datos.put("nombre",nombre);
         Datos.put("password",password);
+        Datos.put("categorias",categoria);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Usuarios");
         databaseReference.child(uid)

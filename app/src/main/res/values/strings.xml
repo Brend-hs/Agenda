@@ -28,7 +28,7 @@
     <string name="CorreoPrincipal"> -- </string>
 
     <string name="AgregarNotas">Agregar</string>
-    <string name="ListarNotas">Mis Notas</string>
+    <string name="ListarNotas">Mis Tareas</string>
     <string name="Archivados">Archivados</string>
     <string name="Perfil">Perfil</string>
     <string name="AcercaDe">Acerca De</string>
@@ -41,6 +41,7 @@
     <string name="Fecha_hora_actual">Fecha y hora actual</string>
     <string name="Titulo">Título</string>
     <string name="Descripcion">Descripcion</string>
+    <string name="Fecha_de_entrega">Fecha de entrega:</string>
     <string name="Btn_Calendario">Calendario</string>
     <string name="Fecha">00/00/0000</string>
     <string name="Btn_Hora">Hora</string>
@@ -53,7 +54,6 @@
     <string-array name="Opciones_Notificacion">
         <item>10 minutos antes</item>
         <item>1 día antes</item>
-        <item>Personalizado</item>
         <item>Sin recordatorio</item>
     </string-array>
 
@@ -127,6 +127,8 @@
     <string name="Notificacion_Detalle">Notificacion</string>
     <string name="Fecha_Registro_Detalle_TXT">Fecha registro: </string>
     <string name="Fecha_Registro_Detalle">Fecha registro</string>
+    <string name="Fecha_Realizacion_Detalle_TXT">Fecha de entrega: </string>
+    <string name="Fecha_Realizacion_Detalle">Fecha de entrega</string>
     <string name="Fecha_Nota_Detalle">Fecha nota</string>
     <string name="Hora_Nota_Detalle">Hora nota</string>
     <string name="Categoria_Detalle_TXT">Categoria: </string>

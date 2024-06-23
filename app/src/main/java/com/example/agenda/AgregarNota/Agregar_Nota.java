@@ -36,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -54,6 +55,8 @@ public class Agregar_Nota extends AppCompatActivity {
 
     DatabaseReference BD_Firebase;
 
+    ArrayList<String> categoriasObtenidas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,15 +69,16 @@ public class Agregar_Nota extends AppCompatActivity {
         });
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Agregar nota");
+        actionBar.setTitle("Agregar tarea");
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         InicializarVariables();
         ObtenerDatos();
         Obtener_Fecha_Hora_Actual();
+        Establecer_Fecha();
+        Establecer_Hora();
         EstablecerNotificacion();
-        ObtenerOpcionNotificacion();
         EstabecerCategoria();
         Obtener_Contacto();
     }
@@ -103,6 +107,7 @@ public class Agregar_Nota extends AppCompatActivity {
     private void ObtenerDatos(){
         String uid_recuperado = getIntent().getStringExtra("Uid");
         String correo_recuperado = getIntent().getStringExtra("Correo");
+        categoriasObtenidas = getIntent().getStringArrayListExtra("Categorias");
 
         Uid_Usuario.setText(uid_recuperado);
         Correo_Usuario.setText(correo_recuperado);
@@ -131,6 +136,9 @@ public class Agregar_Nota extends AppCompatActivity {
         if(!uid_usuario.isEmpty() && !correo_usuario.isEmpty() && !fecha_hora_actual.isEmpty() && !titulo.isEmpty() &&
                 !descripcion.isEmpty() && !notificacion.isEmpty() &&
                 !categoria.isEmpty() && !estado.isEmpty()){
+            if(categoria.equals("Otra")){
+                Toast.makeText(this, categoria, Toast.LENGTH_SHORT).show();
+            }
             Nota nota = new Nota(correo_usuario+"/"+fecha_hora_actual,
                     uid_usuario,
                     correo_usuario,
@@ -254,32 +262,14 @@ public class Agregar_Nota extends AppCompatActivity {
         SpinnerNotificacion.setAdapter(notificacionAdapter);
     }
 
-    private void ObtenerOpcionNotificacion(){
-        SpinnerNotificacion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String opcion = SpinnerNotificacion.getSelectedItem().toString();
-                if(opcion.equals("Personalizado")){
-                    Btn_Calendario.setEnabled(true);
-                    Btn_Hora.setEnabled(true);
-                    Establecer_Fecha();
-                    Establecer_Hora();
-                }else{
-                    Btn_Calendario.setEnabled(false);
-                    Btn_Hora.setEnabled(false);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
     private void EstabecerCategoria(){
-        ArrayAdapter<CharSequence> categoriaAdapter = ArrayAdapter.createFromResource(Agregar_Nota.this,
-                R.array.Opciones_Categoria, android.R.layout.simple_spinner_item);
+
+        ArrayList<String> categoria = categoriasObtenidas;
+        //ArrayList<String> categoria = new ArrayList<>();
+        //categoria.add("Familiar");
+        categoria.add("Otra");
+
+        ArrayAdapter<String> categoriaAdapter = new ArrayAdapter<>(Agregar_Nota.this, android.R.layout.simple_spinner_item, categoria);
         categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SpinnerCategoria.setAdapter(categoriaAdapter);
     }
