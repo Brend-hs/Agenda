@@ -50,7 +50,7 @@ public class ViewHolder_Nota extends RecyclerView.ViewHolder {
                             String hora_nota, String notificacion, String categoria, String contacto, String estado){
         //Declarar vistas
         TextView Id_nota_Item, Uid_Usuario_Item, Correo_Usuario_Item, Fecha_hora_registro_Item, Titulo_Item,
-                Descripcion_Item, Notificacion_Item, Fecha_Item, Hora_Item, Categoria_Item, Estado_Item;
+                Descripcion_Item, Entrega_Item, Notificacion_Item, Fecha_Item, Hora_Item, Categoria_Item, Estado_Item;
 
         LinearLayoutCompat LinearLayout_Item;
 
@@ -61,6 +61,7 @@ public class ViewHolder_Nota extends RecyclerView.ViewHolder {
         Fecha_hora_registro_Item = mView.findViewById(R.id.Fecha_hora_registro_Item);
         Titulo_Item = mView.findViewById(R.id.Titulo_Item);
         Descripcion_Item = mView.findViewById(R.id.Descripcion_Item);
+        Entrega_Item = mView.findViewById(R.id.Entrega_Item);
         Notificacion_Item = mView.findViewById(R.id.Notificacion_Item);
         Fecha_Item = mView.findViewById(R.id.Fecha_Item);
         Hora_Item = mView.findViewById(R.id.Hora_Item);
@@ -75,6 +76,7 @@ public class ViewHolder_Nota extends RecyclerView.ViewHolder {
         Fecha_hora_registro_Item.setText(fecha_hora_registro);
         Titulo_Item.setText(titulo);
         Descripcion_Item.setText(descripcion);
+        Entrega_Item.setText(fecha_nota+" "+hora_nota);
         Notificacion_Item.setText(notificacion);
         Fecha_Item.setText(fecha_nota);
         Hora_Item.setText(hora_nota);

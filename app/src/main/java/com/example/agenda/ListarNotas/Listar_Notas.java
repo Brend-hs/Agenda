@@ -111,7 +111,7 @@ public class Listar_Notas extends AppCompatActivity {
                 viewHolder_nota.setOnClickListener(new ViewHolder_Nota.ClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        TextView Titulo_Detalle, Descripcion_Detalle, Fecha_Registro_Detalle, Notificacion_Detalle, Categoria_Detalle, Estado_Detalle, Contacto_Detalle;
+                        TextView Titulo_Detalle, Descripcion_Detalle, Fecha_Registro_Detalle, Notificacion_Detalle, Categoria_Detalle, Estado_Detalle, Contacto_Detalle,Entrega_Detalle;
 
                         //Realizar la conexión con el diseño
                         dialogDetalle.setContentView(R.layout.activity_detalle_nota);
@@ -119,6 +119,7 @@ public class Listar_Notas extends AppCompatActivity {
                         Titulo_Detalle = dialogDetalle.findViewById(R.id.Titulo_Detalle);
                         Descripcion_Detalle = dialogDetalle.findViewById(R.id.Descripcion_Detalle);
                         Fecha_Registro_Detalle = dialogDetalle.findViewById(R.id.Fecha_Registro_Detalle);
+                        Entrega_Detalle = dialogDetalle.findViewById(R.id.Fecha_Realizacion_Detalle);
                         Notificacion_Detalle = dialogDetalle.findViewById(R.id.Notificacion_Detalle);
                         Categoria_Detalle = dialogDetalle.findViewById(R.id.Categoria_Detalle);
                         Estado_Detalle = dialogDetalle.findViewById(R.id.Estado_Detalle);
@@ -137,11 +138,8 @@ public class Listar_Notas extends AppCompatActivity {
                         Titulo_Detalle.setText(titulo);
                         Descripcion_Detalle.setText(descripcion);
                         Fecha_Registro_Detalle.setText(fecha_registro);
-                        if(notificacion.equals("Personalizado")){
-                            Notificacion_Detalle.setText(fecha+" "+hora);
-                        }else{
-                            Notificacion_Detalle.setText(notificacion);
-                        }
+                        Entrega_Detalle.setText(fecha+" "+hora);
+                        Notificacion_Detalle.setText(notificacion);
                         Categoria_Detalle.setText(categoria);
                         Estado_Detalle.setText(estado);
                         Contacto_Detalle.setText(contacto);
