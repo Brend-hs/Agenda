@@ -17,6 +17,7 @@
         <TextView
             android:id="@+id/Uid_Usuario"
             android:hint="@string/Uid_Usuario"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -26,10 +27,33 @@
         <TextView
             android:id="@+id/Correo_Usuario"
             android:hint="@string/Correo_Usuario"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:fontFamily="@font/worksans"/>
+
+        <!--FECHA Y HORA DE REGISTRO-->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icono_reloj"
+                android:tint="#1A59D8"/>
+
+            <TextView
+                android:text="@string/Fecha_hora_actual_TXT"
+                android:textSize="18sp"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/worksans"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <!--FECHA Y HORA ACTUAL DEL DISPOSITIVO-->
         <TextView
@@ -37,9 +61,10 @@
             android:hint="@string/Fecha_hora_actual"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
             android:textSize="18sp"
+            android:textStyle="bold"
             android:fontFamily="@font/worksans"/>
-
         <!--TITULO-->
         <EditText
             android:id="@+id/Titulo"
