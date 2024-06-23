@@ -3,6 +3,9 @@ package com.example.agenda.ActualizarNota;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,8 +16,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -22,12 +28,17 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.agenda.AgregarNota.Agregar_Nota;
 import com.example.agenda.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
-public class Actualizar_Nota extends AppCompatActivity {
-    TextView Id_nota_A, Uid_Usuario_A, Correo_Usuario_A, Fecha_hora_actual_A, Fecha_A, Hora_A, Estado_A, Contacto_A;
+public class Actualizar_Nota extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+    TextView Id_nota_A, Uid_Usuario_A, Correo_Usuario_A, Fecha_hora_actual_A, Fecha_A, Hora_A, Estado_A, Contacto_A, Estado_nuevo;
     EditText Titulo_A, Descripcion_A;
     Button Btn_Calendario_A, Btn_Hora_A, Btn_Contactos_A;
 
@@ -35,7 +46,7 @@ public class Actualizar_Nota extends AppCompatActivity {
 
     int mes, dia, anio, hora, minuto;
 
-    Spinner SpinnerNotificacion_A, SpinnerCategoria_A;
+    Spinner SpinnerNotificacion_A, SpinnerCategoria_A, Spinner_estado;
     ImageView Tarea_Finalizada, Tarea_No_Finalizada;
 
     int REQUEST_CONTACT = 1;
@@ -47,6 +58,10 @@ public class Actualizar_Nota extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_actualizar_nota);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Actualizar nota");
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         InicializarVistas();
         RecuperarDatos();
         SetearDatos();
@@ -54,6 +69,7 @@ public class Actualizar_Nota extends AppCompatActivity {
         ObtenerOpcionNotificacion();
         EstabecerCategoria();
         ComprobarEstadoNota();
+        Spinner_Estado();
     }
 
     private void InicializarVistas(){
@@ -77,6 +93,9 @@ public class Actualizar_Nota extends AppCompatActivity {
 
         Tarea_Finalizada = findViewById(R.id.Tarea_Finalizada);
         Tarea_No_Finalizada = findViewById(R.id.Tarea_No_Finalizada);
+
+        Spinner_estado = findViewById(R.id.Spinner_estado);
+        Estado_nuevo = findViewById(R.id.Estado_nuevo);
     }
 
     private void RecuperarDatos(){
@@ -109,7 +128,7 @@ public class Actualizar_Nota extends AppCompatActivity {
                 if(opcion.equals("Personalizado")){
                     Btn_Calendario_A.setEnabled(true);
                     Btn_Hora_A.setEnabled(true);
-                    Establecer_Fecha();
+                    SeleccionarFecha();
                     Establecer_Hora();
                 }else{
                     Btn_Calendario_A.setEnabled(false);
@@ -123,7 +142,7 @@ public class Actualizar_Nota extends AppCompatActivity {
             }
         });
     }
-    private void Establecer_Fecha(){
+    private void SeleccionarFecha(){
         Btn_Calendario_A.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -261,5 +280,92 @@ public class Actualizar_Nota extends AppCompatActivity {
         if(estado_nota.equals("Aplazado")){
             Tarea_No_Finalizada.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void Spinner_Estado(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.Estados_nota, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner_estado.setAdapter(adapter);
+        Spinner_estado.setOnItemSelectedListener(this);
+    }
+
+    private void ActualizarNotaBD(){
+        //Obtener los datoss
+        String tituloActualizar = Titulo_A.getText().toString();
+        String descripcionActualizar = Descripcion_A.getText().toString();
+        String fechaActualizar = Fecha_A.getText().toString();
+        String horaActualizar = Hora_A.getText().toString();
+        String notificacionActualizar = SpinnerNotificacion_A.getSelectedItem().toString();
+        String categoriaActualizar = SpinnerCategoria_A.getSelectedItem().toString();
+        String estadoActualizar = Estado_nuevo.getText().toString();
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Notas_Publicadas");
+
+        //Consulta
+        Query query = databaseReference.orderByChild("id_nota").equalTo(id_nota_R);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()){
+                    ds.getRef().child("titulo").setValue(tituloActualizar);
+                    ds.getRef().child("descripcion").setValue(descripcionActualizar);
+                    ds.getRef().child("fecha_nota").setValue(fechaActualizar);
+                    ds.getRef().child("hora_nota").setValue(horaActualizar);
+                    ds.getRef().child("notificacion").setValue(notificacionActualizar);
+                    ds.getRef().child("categoria").setValue(categoriaActualizar);
+                    ds.getRef().child("estado").setValue(estadoActualizar);
+                }
+                Toast.makeText(Actualizar_Nota.this, "Nota actualizada con exito", Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        String ESTADO_ACTUAL = Estado_A.getText().toString();
+
+        String Posicion_2 = parent.getItemAtPosition(2).toString();
+
+        String estado_seleccionado = parent.getItemAtPosition(position).toString();
+        Estado_nuevo.setText(estado_seleccionado);
+
+        if(ESTADO_ACTUAL.equals("Realizado")){
+            Estado_nuevo.setText(Posicion_2);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_actualizar,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.Actualizar_Nota_BD){
+            ActualizarNotaBD();
+            //Toast.makeText(this,"Nota actualizada", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 }

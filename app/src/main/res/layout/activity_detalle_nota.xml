@@ -78,7 +78,8 @@
           android:layout_width="30dp"
           android:layout_height="30dp"
           android:layout_gravity="center"
-          android:src="@drawable/fecha_registro_detalle"/>
+          android:src="@drawable/icono_reloj"
+          android:tint="@color/colorIconos"/>
 
       <!--TEXTO-->
       <TextView
