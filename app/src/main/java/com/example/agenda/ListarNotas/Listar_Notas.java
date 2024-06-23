@@ -3,6 +3,7 @@ package com.example.agenda.ListarNotas;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.agenda.ActualizarNota.Actualizar_Nota;
 import com.example.agenda.Objetos.Nota;
 import com.example.agenda.R;
 import com.example.agenda.ViewHolder.ViewHolder_Nota;
@@ -150,7 +152,20 @@ public class Listar_Notas extends AppCompatActivity {
 
                     @Override
                     public void onItemLongClick(View view, int position) {
+
+                        //Obtener los datos de la nota seleccionada
                         String id_nota = getItem(position).getId_nota();
+                        String uid_usuario = getItem(position).getUid_usuario();
+                        String correo = getItem(position).getCorreo();
+                        String fecha_hora_actual= getItem(position).getFecha_hora_actual();
+                        String titulo = getItem(position).getTitulo();
+                        String descripcion = getItem(position).getDescripcion();
+                        String fecha_nota = getItem(position).getFecha_nota();
+                        String hora_nota = getItem(position).getHora_nota();
+                        String notificacion = getItem(position).getNotificacion();
+                        String categoria = getItem(position).getCategoria();
+                        String contacto = getItem(position).getContacto();
+                        String estado = getItem(position).getEstado();
 
                         //Declarar las vistas
                         Button CD_Eliminar, CD_Actualizar;
@@ -173,7 +188,22 @@ public class Listar_Notas extends AppCompatActivity {
                         CD_Actualizar.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(Listar_Notas.this, "Modificar nota", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(Listar_Notas.this, "Modificar nota", Toast.LENGTH_SHORT).show();
+                                //startActivity(new Intent(Listar_Notas.this, Actualizar_Nota.class));
+                                Intent intent = new Intent(Listar_Notas.this, Actualizar_Nota.class);
+                                intent.putExtra("id_nota", id_nota);
+                                intent.putExtra("uid_usuario", uid_usuario);
+                                intent.putExtra("correo", correo);
+                                intent.putExtra("fecha_hora_actual", fecha_hora_actual);
+                                intent.putExtra("titulo", titulo);
+                                intent.putExtra("descripcion", descripcion);
+                                intent.putExtra("fecha_nota", fecha_nota);
+                                intent.putExtra("hora_nota", hora_nota);
+                                intent.putExtra("notificacion", notificacion);
+                                intent.putExtra("categoria", categoria);
+                                intent.putExtra("contacto", contacto);
+                                intent.putExtra("estado", estado);
+                                startActivity(intent);
                                 dialog.dismiss();
                             }
                         });

@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -314,7 +313,7 @@ public class Agregar_Nota extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_agenda,menu);
+        menuInflater.inflate(R.menu.menu_agregar,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
