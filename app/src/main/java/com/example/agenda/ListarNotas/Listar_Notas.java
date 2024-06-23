@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -25,6 +26,8 @@ import com.example.agenda.ActualizarNota.Actualizar_Nota;
 import com.example.agenda.Objetos.Nota;
 import com.example.agenda.R;
 import com.example.agenda.ViewHolder.ViewHolder_Nota;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,7 +46,10 @@ public class Listar_Notas extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     FirebaseRecyclerAdapter<Nota, ViewHolder_Nota> firebaseRecyclerAdapter;
     FirebaseRecyclerOptions<Nota> options;
-    Dialog dialog;
+    Dialog dialog, dialogDetalle;
+
+    FirebaseAuth auth;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +70,20 @@ public class Listar_Notas extends AppCompatActivity {
         recyclerViewNotas = findViewById(R.id.recyclerViewNotas);
         recyclerViewNotas.setHasFixedSize(true); //Adapte su tamaño a los cmabios de la lista
 
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
         firebaseDatabase = FirebaseDatabase.getInstance();
         BASE_DE_DATOS = firebaseDatabase.getReference("Notas_Publicadas");
         dialog = new Dialog(Listar_Notas.this);
+        dialogDetalle = new Dialog(Listar_Notas.this);
         ListarNotasUsuarios();
     }
 
     private void ListarNotasUsuarios(){
-        options = new FirebaseRecyclerOptions.Builder<Nota>().setQuery(BASE_DE_DATOS,Nota.class).build();
+        //Consulta
+        Query query = BASE_DE_DATOS.orderByChild("uid_usuario").equalTo(user.getUid());
+        options = new FirebaseRecyclerOptions.Builder<Nota>().setQuery(query,Nota.class).build();
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Nota, ViewHolder_Nota>(options) {
             @Override
             protected void onBindViewHolder(@NonNull ViewHolder_Nota viewHolder_nota, int i, @NonNull Nota nota) {
@@ -99,6 +111,42 @@ public class Listar_Notas extends AppCompatActivity {
                 viewHolder_nota.setOnClickListener(new ViewHolder_Nota.ClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+                        TextView Titulo_Detalle, Descripcion_Detalle, Fecha_Registro_Detalle, Notificacion_Detalle, Categoria_Detalle, Estado_Detalle, Contacto_Detalle;
+
+                        //Realizar la conexión con el diseño
+                        dialogDetalle.setContentView(R.layout.activity_detalle_nota);
+
+                        Titulo_Detalle = dialogDetalle.findViewById(R.id.Titulo_Detalle);
+                        Descripcion_Detalle = dialogDetalle.findViewById(R.id.Descripcion_Detalle);
+                        Fecha_Registro_Detalle = dialogDetalle.findViewById(R.id.Fecha_Registro_Detalle);
+                        Notificacion_Detalle = dialogDetalle.findViewById(R.id.Notificacion_Detalle);
+                        Categoria_Detalle = dialogDetalle.findViewById(R.id.Categoria_Detalle);
+                        Estado_Detalle = dialogDetalle.findViewById(R.id.Estado_Detalle);
+                        Contacto_Detalle = dialogDetalle.findViewById(R.id.Contacto_Detalle);
+
+                        String titulo = getItem(position).getTitulo();
+                        String descripcion = getItem(position).getDescripcion();
+                        String fecha_registro = getItem(position).getFecha_hora_actual();
+                        String notificacion = getItem(position).getNotificacion();
+                        String fecha = getItem(position).getFecha_nota();
+                        String hora = getItem(position).getHora_nota();
+                        String categoria = getItem(position).getCategoria();
+                        String estado = getItem(position).getEstado();
+                        String contacto = getItem(position).getContacto();
+
+                        Titulo_Detalle.setText(titulo);
+                        Descripcion_Detalle.setText(descripcion);
+                        Fecha_Registro_Detalle.setText(fecha_registro);
+                        if(notificacion.equals("Personalizado")){
+                            Notificacion_Detalle.setText(fecha+" "+hora);
+                        }else{
+                            Notificacion_Detalle.setText(notificacion);
+                        }
+                        Categoria_Detalle.setText(categoria);
+                        Estado_Detalle.setText(estado);
+                        Contacto_Detalle.setText(contacto);
+
+                        dialogDetalle.show();
                         Toast.makeText(Listar_Notas.this, "On item Click", Toast.LENGTH_SHORT).show();
                     }
 

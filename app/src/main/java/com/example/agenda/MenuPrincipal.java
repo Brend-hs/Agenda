@@ -12,6 +12,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -36,6 +37,8 @@ public class MenuPrincipal extends AppCompatActivity {
 
     ProgressBar progressBarDatos;
 
+    LinearLayoutCompat Linear_Nombres, Linear_Correo;
+
     DatabaseReference Usuarios;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,9 @@ public class MenuPrincipal extends AppCompatActivity {
         NombresPrincipal = findViewById(R.id.NombresPrincipal);
         CorreoPrincipal = findViewById(R.id.CorreoPrincipal);
         progressBarDatos = findViewById(R.id.progressBarDatos);
+
+        Linear_Nombres = findViewById(R.id.Linear_Nombres);
+        Linear_Correo = findViewById(R.id.Linear_Correo);
 
         Usuarios = FirebaseDatabase.getInstance().getReference("Usuarios"); //El nombre debe coincidir como esta en Firebase
 
@@ -149,9 +155,11 @@ public class MenuPrincipal extends AppCompatActivity {
                     progressBarDatos.setVisibility(View.GONE);
 
                     //Los textview se muestran
-                    UidPrincipal.setVisibility(View.VISIBLE);
-                    NombresPrincipal.setVisibility(View.VISIBLE);
-                    CorreoPrincipal.setVisibility(View.VISIBLE);
+                    //UidPrincipal.setVisibility(View.VISIBLE);
+                    //NombresPrincipal.setVisibility(View.VISIBLE);
+                    //CorreoPrincipal.setVisibility(View.VISIBLE);
+                    Linear_Nombres.setVisibility(View.VISIBLE);
+                    Linear_Correo.setVisibility(View.VISIBLE);
 
                     //Obtenemos los datos
                     String uid= ""+snapshot.child("uid").getValue();

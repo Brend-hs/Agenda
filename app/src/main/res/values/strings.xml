@@ -37,6 +37,7 @@
     <!--AGREGAR NOTA-->
     <string name="Uid_Usuario">Uid del usuario</string>
     <string name="Correo_Usuario">Correo de usuario</string>
+    <string name="Fecha_hora_actual_TXT">Fecha de registro: </string>
     <string name="Fecha_hora_actual">Fecha y hora actual</string>
     <string name="Titulo">Título</string>
     <string name="Descripcion">Descripcion</string>
@@ -87,20 +88,27 @@
     <string name="CD_Eliminar">Eliminar</string>
     <string name="CD_Actualizar">Modificar</string>
 
-    <!--ACTUALIZAR NOTA-->
-    <string name="Id_nota_A">Id nota</string>
-    <string name="Uid_Usuario_A">Uid del usuario</string>
-    <string name="Correo_Usuario_A">Correo de usuario</string>
-    <string name="Fecha_hora_actual_A">Fecha y hora de registro</string>
-    <string name="Titulo_A">Título</string>
-    <string name="Descripcion_A">Descripcion</string>
-    <string name="Btn_Calendario_A">Calendario</string>
-    <string name="Fecha_A">00/00/0000</string>
-    <string name="Btn_Hora_A">Hora</string>
-    <string name="Hora_A">00:00</string>
-    <string name="Estado_A">Pendiente</string>
-    <string name="Btn_Contactos_A">Contacto</string>
-    <string name="Contacto_A">00 0000 0000</string>
-    <string name="Estado_nuevo"> -- </string>
-
+    <!--DETALLE NOTA-->
+    <string name="Id_nota_Detalle_TXT">Id de la nota: </string>
+    <string name="Id_nota_Detalle">Id nota</string>
+    <string name="Id_usuario_Detalle_TXT">Uid del usuario:</string>
+    <string name="Id_usuario_Detalle">Uid usuario</string>
+    <string name="Correo_usuario_Detalle_TXT">Correo del usuario: </string>
+    <string name="Correo_usuario_Detalle">Correo usuario</string>
+    <string name="Titulo_Detalle_TXT">Titulo: </string>
+    <string name="Titulo_Detalle">Titulo</string>
+    <string name="Descripcion_Detalle_TXT">Descripcion: </string>
+    <string name="Descripcion_Detalle">Descripcion</string>
+    <string name="Notificacion_Detalle_TXT">Notificacion: </string>
+    <string name="Notificacion_Detalle">Notificacion</string>
+    <string name="Fecha_Registro_Detalle_TXT">Fecha registro: </string>
+    <string name="Fecha_Registro_Detalle">Fecha registro</string>
+    <string name="Fecha_Nota_Detalle">Fecha nota</string>
+    <string name="Hora_Nota_Detalle">Hora nota</string>
+    <string name="Categoria_Detalle_TXT">Categoria: </string>
+    <string name="Categoria_Detalle">Categoria</string>
+    <string name="Estado_Detalle_TXT">Estado: </string>
+    <string name="Estado_Detalle">Estado nota</string>
+    <string name="Contacto_Detalle_TXT">Contacto: </string>
+    <string name="Contacto_Detalle">00 0000 0000</string>
 </resources>

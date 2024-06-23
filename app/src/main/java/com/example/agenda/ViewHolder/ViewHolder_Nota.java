@@ -1,10 +1,12 @@
 package com.example.agenda.ViewHolder;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.agenda.R;
@@ -50,6 +52,8 @@ public class ViewHolder_Nota extends RecyclerView.ViewHolder {
         TextView Id_nota_Item, Uid_Usuario_Item, Correo_Usuario_Item, Fecha_hora_registro_Item, Titulo_Item,
                 Descripcion_Item, Notificacion_Item, Fecha_Item, Hora_Item, Categoria_Item, Estado_Item;
 
+        LinearLayoutCompat LinearLayout_Item;
+
         //Establecer la conexion con el item
         Id_nota_Item = mView.findViewById(R.id.Id_nota_Item);
         Uid_Usuario_Item = mView.findViewById(R.id.Uid_Usuario_Item);
@@ -62,6 +66,7 @@ public class ViewHolder_Nota extends RecyclerView.ViewHolder {
         Hora_Item = mView.findViewById(R.id.Hora_Item);
         Categoria_Item = mView.findViewById(R.id.Categoria_Item);
         Estado_Item = mView.findViewById(R.id.Estado_Item);
+        LinearLayout_Item = mView.findViewById(R.id.LinearLayout_Item);
 
         //Setear la informacion dentro del item
         Id_nota_Item.setText(id_nota);
@@ -75,5 +80,13 @@ public class ViewHolder_Nota extends RecyclerView.ViewHolder {
         Hora_Item.setText(hora_nota);
         Categoria_Item.setText(categoria);
         Estado_Item.setText(estado);
+
+        if(estado.equals("Pendiente")){
+            LinearLayout_Item.setBackgroundColor(Color.parseColor("#990000"));
+        } else if (estado.equals("Realizado")) {
+            LinearLayout_Item.setBackgroundColor(Color.parseColor("#9ADE7B"));
+        }else{
+            LinearLayout_Item.setBackgroundColor(Color.parseColor("#FFBB64"));
+        }
     }
 }
