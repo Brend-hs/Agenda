@@ -87,4 +87,28 @@
     <string name="ElijaOpcionTXT">Elija una opción</string>
     <string name="CD_Eliminar">Eliminar</string>
     <string name="CD_Actualizar">Modificar</string>
+
+    <!--DETALLE NOTA-->
+    <string name="Id_nota_Detalle_TXT">Id de la nota: </string>
+    <string name="Id_nota_Detalle">Id nota</string>
+    <string name="Id_usuario_Detalle_TXT">Uid del usuario:</string>
+    <string name="Id_usuario_Detalle">Uid usuario</string>
+    <string name="Correo_usuario_Detalle_TXT">Correo del usuario: </string>
+    <string name="Correo_usuario_Detalle">Correo usuario</string>
+    <string name="Titulo_Detalle_TXT">Titulo: </string>
+    <string name="Titulo_Detalle">Titulo</string>
+    <string name="Descripcion_Detalle_TXT">Descripcion: </string>
+    <string name="Descripcion_Detalle">Descripcion</string>
+    <string name="Notificacion_Detalle_TXT">Notificacion: </string>
+    <string name="Notificacion_Detalle">Notificacion</string>
+    <string name="Fecha_Registro_Detalle_TXT">Fecha registro: </string>
+    <string name="Fecha_Registro_Detalle">Fecha registro</string>
+    <string name="Fecha_Nota_Detalle">Fecha nota</string>
+    <string name="Hora_Nota_Detalle">Hora nota</string>
+    <string name="Categoria_Detalle_TXT">Categoria: </string>
+    <string name="Categoria_Detalle">Categoria</string>
+    <string name="Estado_Detalle_TXT">Estado: </string>
+    <string name="Estado_Detalle">Estado nota</string>
+    <string name="Contacto_Detalle_TXT">Contacto: </string>
+    <string name="Contacto_Detalle">00 0000 0000</string>
 </resources>
