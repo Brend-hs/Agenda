@@ -81,4 +81,19 @@
     <string name="Estado_Item_TXT">Estado: </string>
     <string name="Estado_Item">Pendiente</string>
     <string name="Contacto_Item">00 0000 0000</string>
+
+    <!--ACTUALIZAR NOTA-->
+    <string name="Id_nota_A">Id nota</string>
+    <string name="Uid_Usuario_A">Uid del usuario</string>
+    <string name="Correo_Usuario_A">Correo de usuario</string>
+    <string name="Fecha_hora_actual_A">Fecha y hora de registro</string>
+    <string name="Titulo_A">Título</string>
+    <string name="Descripcion_A">Descripcion</string>
+    <string name="Btn_Calendario_A">Calendario</string>
+    <string name="Fecha_A">00/00/0000</string>
+    <string name="Btn_Hora_A">Hora</string>
+    <string name="Hora_A">00:00</string>
+    <string name="Estado_A">Pendiente</string>
+    <string name="Btn_Contactos_A">Contacto</string>
+    <string name="Contacto_A">00 0000 0000</string>
 </resources>
