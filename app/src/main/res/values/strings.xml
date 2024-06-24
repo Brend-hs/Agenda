@@ -30,6 +30,7 @@
     <string name="AgregarNotas">Agregar</string>
     <string name="ListarNotas">Mis Tareas</string>
     <string name="Archivados">Archivados</string>
+    <string name="Categorias">Categorias</string>
     <string name="Perfil">Perfil</string>
     <string name="AcercaDe">Acerca De</string>
     <string name="CerrarSesion">Salir</string>
@@ -138,4 +139,11 @@
     <string name="Estado_Detalle">Estado nota</string>
     <string name="Contacto_Detalle_TXT">Contacto: </string>
     <string name="Contacto_Detalle">00 0000 0000</string>
+
+    <!--CATEGORIAS-->
+    <string name="Categoria_Item_C">Categoria</string>
+    <string name="Categoria_Dialogo_TXT">Categoría: </string>
+    <string name="Categoria_Dialogo">Categoría</string>
+    <string name="Guardar_Dialogo">Guardar</string>
+    <string name="Nueva_Categoria_Dialogo">Categoria</string>
 </resources>

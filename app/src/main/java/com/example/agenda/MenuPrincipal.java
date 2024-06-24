@@ -18,6 +18,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.agenda.AgregarNota.Agregar_Nota;
+import com.example.agenda.CategoriasNota.Categorias_Nota;
 import com.example.agenda.ListarNotas.Listar_Notas;
 import com.example.agenda.NotasArchivadas.Notas_Archivadas;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,9 +30,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MenuPrincipal extends AppCompatActivity {
-    Button AgregarNotas, ListarNotas, Archivados, Perfil, AcercaDe, CerrarSesion;
+    Button AgregarNotas, ListarNotas, Archivados, Categorias, AcercaDe, CerrarSesion;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
 
@@ -71,7 +74,8 @@ public class MenuPrincipal extends AppCompatActivity {
         AgregarNotas = findViewById(R.id.AgregarNotas);
         ListarNotas = findViewById(R.id.ListarNotas);
         Archivados = findViewById(R.id.Archivados);
-        Perfil = findViewById(R.id.Perfil);
+        Categorias = findViewById(R.id.Categorias);
+        //Perfil = findViewById(R.id.Perfil);
         AcercaDe = findViewById(R.id.AcercaDe);
         CerrarSesion = findViewById(R.id.CerrarSesion);
 
@@ -99,7 +103,7 @@ public class MenuPrincipal extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MenuPrincipal.this, Listar_Notas.class));
-                Toast.makeText(MenuPrincipal.this, "Listar Notas", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MenuPrincipal.this, "Listar Tareas", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -107,17 +111,25 @@ public class MenuPrincipal extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MenuPrincipal.this, Notas_Archivadas.class));
-                Toast.makeText(MenuPrincipal.this, "Archivar Notas", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MenuPrincipal.this, "Archivar Tareas", Toast.LENGTH_SHORT).show();
             }
         });
 
-        Perfil.setOnClickListener(new View.OnClickListener() {
+        Categorias.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MenuPrincipal.this, Categorias_Nota.class));
+                Toast.makeText(MenuPrincipal.this, "Categorias", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        /*Perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MenuPrincipal.this, Perfil_Usuario.class));
                 Toast.makeText(MenuPrincipal.this, "Perfil del Usuario", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         AcercaDe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,7 +182,19 @@ public class MenuPrincipal extends AppCompatActivity {
                     String uid= ""+snapshot.child("uid").getValue();
                     String nombres= ""+snapshot.child("nombre").getValue();
                     String correo=""+snapshot.child("correo").getValue();
-                    categorias = (ArrayList<String>) snapshot.child("categorias").getValue();
+                    // Inicializamos la lista de categorías
+                    categorias = new ArrayList<>();
+
+                    Object categoriasObject = snapshot.child("categorias").getValue();
+                    if (categoriasObject instanceof HashMap) {
+                        HashMap<String, String> categoriasMap = (HashMap<String, String>) categoriasObject;
+                        categorias = new ArrayList<>(categoriasMap.values());
+                    } else if (categoriasObject instanceof List) {
+                        categorias = (ArrayList<String>) categoriasObject;
+                    } else {
+                        // Manejar el caso en que la estructura de datos no sea la esperada
+                        Toast.makeText(MenuPrincipal.this, "Error al obtener categorías", Toast.LENGTH_SHORT).show();
+                    }
 
                     //Setear los datos en los respectivos texview
                     UidPrincipal.setText(uid);
@@ -181,7 +205,8 @@ public class MenuPrincipal extends AppCompatActivity {
                     AgregarNotas.setEnabled(true);
                     ListarNotas.setEnabled(true);
                     Archivados.setEnabled(true);
-                    Perfil.setEnabled(true);
+                    Categorias.setEnabled(true);
+                    //Perfil.setEnabled(true);
                     AcercaDe.setEnabled(true);
                     CerrarSesion.setEnabled(true);
                 }

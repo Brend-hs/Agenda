@@ -225,7 +225,7 @@ public class Listar_Notas extends AppCompatActivity {
 
     private void EliminarNota(String idNota) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Listar_Notas.this);
-        builder.setTitle("Eliminar nota");
+        builder.setTitle("Eliminar tarea");
         builder.setMessage("¿Desea eliminar la tarea?");
         builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override
