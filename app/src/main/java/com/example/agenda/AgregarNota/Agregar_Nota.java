@@ -30,14 +30,23 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.agenda.CategoriasNota.Categorias_Nota;
+import com.example.agenda.MenuPrincipal;
 import com.example.agenda.Objetos.Nota;
 import com.example.agenda.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class Agregar_Nota extends AppCompatActivity {
@@ -55,6 +64,9 @@ public class Agregar_Nota extends AppCompatActivity {
 
     DatabaseReference BD_Firebase;
 
+    FirebaseAuth auth;
+    FirebaseUser user;
+    ArrayList<String> categorias;
     ArrayList<String> categoriasObtenidas;
 
     @Override
@@ -73,13 +85,16 @@ public class Agregar_Nota extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
         InicializarVariables();
         ObtenerDatos();
         Obtener_Fecha_Hora_Actual();
         Establecer_Fecha();
         Establecer_Hora();
         EstablecerNotificacion();
-        EstabecerCategoria();
+        EstablecerCategoria();
         Obtener_Contacto();
     }
 
@@ -263,16 +278,64 @@ public class Agregar_Nota extends AppCompatActivity {
         SpinnerNotificacion.setAdapter(notificacionAdapter);
     }
 
-    private void EstabecerCategoria(){
+    private void EstablecerCategoria(){
+        DatabaseReference Usuarios = FirebaseDatabase.getInstance().getReference("Usuarios");
+        Usuarios.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<String> categoriasObtenidas = new ArrayList<>();
+                //Si el usuario existe
+                if (snapshot.exists()){
+                    String correo=""+snapshot.child("correo").getValue();
+                    // Inicializamos la lista de categorías
+                    categorias = new ArrayList<>();
 
-        ArrayList<String> categoria = categoriasObtenidas;
-        //ArrayList<String> categoria = new ArrayList<>();
-        //categoria.add("Familiar");
-        categoria.add("Otra");
+                    Object categoriasObject = snapshot.child("categorias").getValue();
+                    if (categoriasObject instanceof HashMap) {
+                        HashMap<String, String> categoriasMap = (HashMap<String, String>) categoriasObject;
+                        categorias = new ArrayList<>(categoriasMap.values());
+                        categoriasObtenidas = categorias;
+                        categoriasObtenidas.add("Otra");
+                    } else if (categoriasObject instanceof List) {
+                        categorias = (ArrayList<String>) categoriasObject;
+                        categoriasObtenidas = categorias;
+                        categoriasObtenidas.add("Otra");
+                    } else {
+                        // Manejar el caso en que la estructura de datos no sea la esperada
+                        Toast.makeText(Agregar_Nota.this, "Error al obtener categorías", Toast.LENGTH_SHORT).show();
+                    }
+                    if(!categoriasObtenidas.isEmpty()){
+                        ArrayAdapter<String> categoriaAdapter = new ArrayAdapter<>(Agregar_Nota.this, android.R.layout.simple_spinner_item, categoriasObtenidas);
+                        categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        SpinnerCategoria.setAdapter(categoriaAdapter);
+                        ComprobarCategoria();
+                    }
+                }
+            }
 
-        ArrayAdapter<String> categoriaAdapter = new ArrayAdapter<>(Agregar_Nota.this, android.R.layout.simple_spinner_item, categoria);
-        categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        SpinnerCategoria.setAdapter(categoriaAdapter);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void ComprobarCategoria(){
+        SpinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String opcion = parent.getItemAtPosition(position).toString();
+                if(opcion.equals("Otra")){
+                    Intent intent = new Intent(Agregar_Nota.this, Categorias_Nota.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void Obtener_Contacto(){
@@ -297,6 +360,7 @@ public class Agregar_Nota extends AppCompatActivity {
             }
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

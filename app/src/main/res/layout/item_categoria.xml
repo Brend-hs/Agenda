@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardUseCompatPadding="true"
+    android:padding="0.2dp"
+    app:cardCornerRadius="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="6">
+
+            <TextView
+                android:id="@+id/Categoria_Item_C"
+                android:text="@string/Categoria_Item_C"
+                android:fontFamily="@font/worksans"
+                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:layout_weight="4"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"/>
+
+            <ImageButton
+                android:id="@+id/Editar_Categoria"
+                android:src="@drawable/editar_categoria"
+                android:background="#ED9455"
+                android:padding="10dp"
+                android:layout_width="25dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                app:tint="@color/white" />
+
+            <ImageButton
+                android:id="@+id/Eliminar_Categoria"
+                android:src="@drawable/borrar_categoria"
+                android:background="@color/colorPendiente"
+                android:padding="10dp"
+                android:layout_width="25dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                app:tint="@color/white" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.cardview.widget.CardView>
