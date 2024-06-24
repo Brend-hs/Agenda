@@ -50,7 +50,8 @@ public class ViewHolder_Nota extends RecyclerView.ViewHolder {
                             String hora_nota, String notificacion, String categoria, String contacto, String estado){
         //Declarar vistas
         TextView Id_nota_Item, Uid_Usuario_Item, Correo_Usuario_Item, Fecha_hora_registro_Item, Titulo_Item,
-                Descripcion_Item, Entrega_Item, Notificacion_Item, Fecha_Item, Hora_Item, Categoria_Item, Estado_Item;
+                Descripcion_Item, Entrega_Item, Notificacion_Item, Fecha_Item, Hora_Item, Categoria_Item,
+                Contacto_Item, Estado_Item;
 
         LinearLayoutCompat LinearLayout_Item;
 
@@ -68,6 +69,7 @@ public class ViewHolder_Nota extends RecyclerView.ViewHolder {
         Categoria_Item = mView.findViewById(R.id.Categoria_Item);
         Estado_Item = mView.findViewById(R.id.Estado_Item);
         LinearLayout_Item = mView.findViewById(R.id.LinearLayout_Item);
+        Contacto_Item = mView.findViewById(R.id.Contacto_Item);
 
         //Setear la informacion dentro del item
         Id_nota_Item.setText(id_nota);
@@ -82,6 +84,7 @@ public class ViewHolder_Nota extends RecyclerView.ViewHolder {
         Hora_Item.setText(hora_nota);
         Categoria_Item.setText(categoria);
         Estado_Item.setText(estado);
+        Contacto_Item.setText(contacto);
 
         if(estado.equals("Pendiente")){
             LinearLayout_Item.setBackgroundColor(Color.parseColor("#990000"));
