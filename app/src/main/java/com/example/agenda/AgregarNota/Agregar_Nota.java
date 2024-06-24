@@ -50,7 +50,7 @@ public class Agregar_Nota extends AppCompatActivity {
 
     Spinner SpinnerNotificacion, SpinnerCategoria;
 
-    int REQUEST_CONTACT = 1;
+    private static final int REQUEST_CONTACT = 1;
     String ContactoSeleccionado = "";
 
     DatabaseReference BD_Firebase;
@@ -131,6 +131,7 @@ public class Agregar_Nota extends AppCompatActivity {
         String notificacion = SpinnerNotificacion.getSelectedItem().toString();
         String categoria = SpinnerCategoria.getSelectedItem().toString();
         String estado = Estado.getText().toString();
+        String contacto = Contacto.getText().toString();
         
         //Validar cada uno de los datos
         if(!uid_usuario.isEmpty() && !correo_usuario.isEmpty() && !fecha_hora_actual.isEmpty() && !titulo.isEmpty() &&
@@ -149,7 +150,7 @@ public class Agregar_Nota extends AppCompatActivity {
                     hora,
                     notificacion,
                     categoria,
-                    ContactoSeleccionado,
+                    contacto,
                     estado);
 
             String Nota_Usuario = BD_Firebase.push().getKey();
@@ -275,13 +276,10 @@ public class Agregar_Nota extends AppCompatActivity {
     }
 
     private void Obtener_Contacto(){
-        Btn_Contactos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent contactoIntent = new Intent(Intent.ACTION_PICK);
-                contactoIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-                startActivityForResult(contactoIntent, REQUEST_CONTACT);
-            }
+        Btn_Contactos.setOnClickListener(v -> {
+            Intent contactoIntent = new Intent(Intent.ACTION_PICK);
+            contactoIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+            startActivityForResult(contactoIntent, REQUEST_CONTACT);
         });
     }
 
@@ -289,7 +287,7 @@ public class Agregar_Nota extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==REQUEST_CONTACT && resultCode==RESULT_OK){
+        if(requestCode==REQUEST_CONTACT && resultCode==RESULT_OK){
             Uri contactoUri = data.getData();
             Cursor cursor = getContentResolver().query(contactoUri, new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},null,null,null);
             if(cursor!=null && cursor.moveToFirst()){
