@@ -146,4 +146,13 @@
     <string name="Categoria_Dialogo">Categoría</string>
     <string name="Guardar_Dialogo">Guardar</string>
     <string name="Nueva_Categoria_Dialogo">Categoria</string>
+
+    <!--INFORMACIÓN DE APLICACION-->
+    <string name="Desarrollador">Desarrollado por: </string>
+    <string name="Desarrollador1">Mariana Berenice Hernández Castillo</string>
+    <string name="Desarrollador2">Brenda Hernández Saucedo</string>
+    <string name="Desarrollador3">Héctor Carrillo Estrada</string>
+    <string name="CorreoSoporte">Soporte: agendamoviles65@gmail.com</string>
+    <string name="Version">Version: 0.1</string>
+    <string name="EntendidoInfo">Entendido</string>
 </resources>
