@@ -139,6 +139,8 @@
     <string name="Estado_Detalle">Estado nota</string>
     <string name="Contacto_Detalle_TXT">Contacto: </string>
     <string name="Contacto_Detalle">00 0000 0000</string>
+    <string name="Llamar">Llamar</string>
+    <string name="Mensaje">Mensaje</string>
 
     <!--CATEGORIAS-->
     <string name="Categoria_Item_C">Categoria</string>

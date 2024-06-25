@@ -1,9 +1,12 @@
 package com.example.agenda.ListarNotas;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,9 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -53,6 +59,8 @@ public class Listar_Notas extends AppCompatActivity {
 
     FirebaseAuth auth;
     FirebaseUser user;
+
+    String contactoSeleccionado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +123,7 @@ public class Listar_Notas extends AppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
                         TextView Titulo_Detalle, Descripcion_Detalle, Fecha_Registro_Detalle, Notificacion_Detalle, Categoria_Detalle, Estado_Detalle, Contacto_Detalle,Entrega_Detalle;
-
+                        Button Mensaje, Llamar;
                         //Realizar la conexión con el diseño
                         dialogDetalle.setContentView(R.layout.activity_detalle_nota);
 
@@ -128,6 +136,9 @@ public class Listar_Notas extends AppCompatActivity {
                         Estado_Detalle = dialogDetalle.findViewById(R.id.Estado_Detalle);
                         Contacto_Detalle = dialogDetalle.findViewById(R.id.Contacto_Detalle);
 
+                        Mensaje = dialogDetalle.findViewById(R.id.Mensaje);
+                        Llamar = dialogDetalle.findViewById(R.id.Llamar);
+
                         String titulo = getItem(position).getTitulo();
                         String descripcion = getItem(position).getDescripcion();
                         String fecha_registro = getItem(position).getFecha_hora_actual();
@@ -137,6 +148,7 @@ public class Listar_Notas extends AppCompatActivity {
                         String categoria = getItem(position).getCategoria();
                         String estado = getItem(position).getEstado();
                         String contacto = getItem(position).getContacto();
+                        contactoSeleccionado = contacto;
 
                         Titulo_Detalle.setText(titulo);
                         Descripcion_Detalle.setText(descripcion);
@@ -146,6 +158,30 @@ public class Listar_Notas extends AppCompatActivity {
                         Categoria_Detalle.setText(categoria);
                         Estado_Detalle.setText(estado);
                         Contacto_Detalle.setText(contacto);
+
+                        Mensaje.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (ContextCompat.checkSelfPermission(Listar_Notas.this,
+                                        Manifest.permission.SEND_SMS)==PackageManager.PERMISSION_GRANTED){
+                                    EnviarMensaje();
+                                }else{
+                                    SolicitudPermisoMensaje.launch(Manifest.permission.SEND_SMS);
+                                }
+                            }
+                        });
+
+                        Llamar.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if(ContextCompat.checkSelfPermission(Listar_Notas.this,
+                                        Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
+                                    LlamarContacto();
+                                }else{
+                                    SolicitudPermisoLlamada.launch(Manifest.permission.CALL_PHONE);
+                                }
+                            }
+                        });
 
                         dialogDetalle.show();
                         Toast.makeText(Listar_Notas.this, "On item Click", Toast.LENGTH_SHORT).show();
@@ -222,6 +258,45 @@ public class Listar_Notas extends AppCompatActivity {
         recyclerViewNotas.setLayoutManager(linearLayoutManager);
         recyclerViewNotas.setAdapter(firebaseRecyclerAdapter);
     }
+
+    private void LlamarContacto(){
+        if(!contactoSeleccionado.isEmpty()){
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:"+contactoSeleccionado));
+            startActivity(intent);
+        }else{
+            Toast.makeText(Listar_Notas.this, "El contacto no cuenta con un número telefonico", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void EnviarMensaje(){
+        if(!contactoSeleccionado.isEmpty()){
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("smsto:"+contactoSeleccionado));
+            intent.putExtra("sms_body","");
+            startActivity(intent);
+        }else{
+            Toast.makeText(Listar_Notas.this, "El contacto no cuenta con un número telefonico", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private ActivityResultLauncher<String> SolicitudPermisoLlamada =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted ->{
+                if(isGranted){
+                    LlamarContacto();
+                }else{
+                    Toast.makeText(this, "Permiso denegado", Toast.LENGTH_SHORT).show();
+                }
+    });
+
+    private ActivityResultLauncher<String> SolicitudPermisoMensaje =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted->{
+               if (isGranted){
+                   EnviarMensaje();
+               }else{
+                   Toast.makeText(this, "Permiso denegado", Toast.LENGTH_SHORT).show();
+               }
+            });
 
     private void EliminarNota(String idNota) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Listar_Notas.this);
