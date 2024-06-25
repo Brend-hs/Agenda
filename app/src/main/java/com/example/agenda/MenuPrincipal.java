@@ -1,5 +1,6 @@
 package com.example.agenda;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -47,6 +48,7 @@ public class MenuPrincipal extends AppCompatActivity {
     DatabaseReference Usuarios;
 
     ArrayList<String> categorias;
+    Dialog dialog_informacion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,8 @@ public class MenuPrincipal extends AppCompatActivity {
 
         Linear_Nombres = findViewById(R.id.Linear_Nombres);
         Linear_Correo = findViewById(R.id.Linear_Correo);
+
+        dialog_informacion = new Dialog(this);
 
         Usuarios = FirebaseDatabase.getInstance().getReference("Usuarios"); //El nombre debe coincidir como esta en Firebase
 
@@ -134,7 +138,7 @@ public class MenuPrincipal extends AppCompatActivity {
         AcercaDe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MenuPrincipal.this, "Acerca De", Toast.LENGTH_SHORT).show();
+                Informacion();
             }
         });
 
@@ -144,6 +148,22 @@ public class MenuPrincipal extends AppCompatActivity {
                 SalirAplicacion();
             }
         });
+    }
+
+    private void Informacion(){
+        Button EntendidoInfo;
+        dialog_informacion.setContentView(R.layout.dialogo_informacion);
+        EntendidoInfo = dialog_informacion.findViewById(R.id.EntendidoInfo);
+
+        EntendidoInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_informacion.dismiss();
+            }
+        });
+
+        dialog_informacion.show();
+        dialog_informacion.setCanceledOnTouchOutside(false);
     }
 
     @Override
