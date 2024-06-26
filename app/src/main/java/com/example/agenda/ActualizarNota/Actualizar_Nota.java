@@ -1,8 +1,13 @@
 package com.example.agenda.ActualizarNota;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,12 +27,12 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.agenda.AgregarNota.Agregar_Nota;
+import com.example.agenda.CategoriasNota.Categorias_Nota;
 import com.example.agenda.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +40,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
 public class Actualizar_Nota extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     TextView Id_nota_A, Uid_Usuario_A, Correo_Usuario_A, Fecha_hora_actual_A, Fecha_A, Hora_A, Estado_A, Contacto_A, Estado_nuevo;
@@ -51,23 +59,31 @@ public class Actualizar_Nota extends AppCompatActivity implements AdapterView.On
 
     int REQUEST_CONTACT = 1;
     String ContactoSeleccionado = "";
-
+    FirebaseAuth auth;
+    FirebaseUser user;
     DatabaseReference BD_Firebase;
+    ArrayList<String> categorias;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_actualizar_nota);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Actualizar nota");
+        actionBar.setTitle("Actualizar tarea");
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
         InicializarVistas();
         RecuperarDatos();
         SetearDatos();
+        SeleccionarFecha();
+        Establecer_Hora();
         EstablecerNotificacion();
-        ObtenerOpcionNotificacion();
-        EstabecerCategoria();
+        EstablecerCategoria();
+        Obtener_Contacto();
         ComprobarEstadoNota();
         Spinner_Estado();
     }
@@ -96,6 +112,8 @@ public class Actualizar_Nota extends AppCompatActivity implements AdapterView.On
 
         Spinner_estado = findViewById(R.id.Spinner_estado);
         Estado_nuevo = findViewById(R.id.Estado_nuevo);
+
+        BD_Firebase = FirebaseDatabase.getInstance().getReference("Usuarios");
     }
 
     private void RecuperarDatos(){
@@ -120,28 +138,7 @@ public class Actualizar_Nota extends AppCompatActivity implements AdapterView.On
         notificacionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SpinnerNotificacion_A.setAdapter(notificacionAdapter);
     }
-    private void ObtenerOpcionNotificacion(){
-        SpinnerNotificacion_A.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String opcion = SpinnerNotificacion_A.getSelectedItem().toString();
-                if(opcion.equals("Personalizado")){
-                    Btn_Calendario_A.setEnabled(true);
-                    Btn_Hora_A.setEnabled(true);
-                    SeleccionarFecha();
-                    Establecer_Hora();
-                }else{
-                    Btn_Calendario_A.setEnabled(false);
-                    Btn_Hora_A.setEnabled(false);
-                }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
     private void SeleccionarFecha(){
         Btn_Calendario_A.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,11 +229,86 @@ public class Actualizar_Nota extends AppCompatActivity implements AdapterView.On
         });
     }
 
-    private void EstabecerCategoria(){
-        ArrayAdapter<CharSequence> categoriaAdapter = ArrayAdapter.createFromResource(Actualizar_Nota.this,
-                R.array.Opciones_Categoria, android.R.layout.simple_spinner_item);
-        categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        SpinnerCategoria_A.setAdapter(categoriaAdapter);
+    private void EstablecerCategoria(){
+
+        BD_Firebase.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<String> categoriasObtenidas = new ArrayList<>();
+                //Si el usuario existe
+                if (snapshot.exists()){
+                    // Inicializamos la lista de categorías
+                    categorias = new ArrayList<>();
+
+                    Object categoriasObject = snapshot.child("categorias").getValue();
+                    if (categoriasObject instanceof HashMap) {
+                        HashMap<String, String> categoriasMap = (HashMap<String, String>) categoriasObject;
+                        categorias = new ArrayList<>(categoriasMap.values());
+                        categoriasObtenidas = categorias;
+                        categoriasObtenidas.add("Otra");
+                    } else if (categoriasObject instanceof List) {
+                        categorias = (ArrayList<String>) categoriasObject;
+                        categoriasObtenidas = categorias;
+                        categoriasObtenidas.add("Otra");
+                    } else {
+                        // Manejar el caso en que la estructura de datos no sea la esperada
+                        Toast.makeText(Actualizar_Nota.this, "Error al obtener categorías", Toast.LENGTH_SHORT).show();
+                    }
+                    if(!categoriasObtenidas.isEmpty()){
+                        ArrayAdapter<String> categoriaAdapter = new ArrayAdapter<>(Actualizar_Nota.this, android.R.layout.simple_spinner_item, categoriasObtenidas);
+                        categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        SpinnerCategoria_A.setAdapter(categoriaAdapter);
+                        ComprobarCategoria();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void ComprobarCategoria(){
+        SpinnerCategoria_A.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String opcion = parent.getItemAtPosition(position).toString();
+                if(opcion.equals("Otra")){
+                    Intent intent = new Intent(Actualizar_Nota.this, Categorias_Nota.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void Obtener_Contacto(){
+        Btn_Contactos_A.setOnClickListener(v -> {
+            Intent contactoIntent = new Intent(Intent.ACTION_PICK);
+            contactoIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+            startActivityForResult(contactoIntent, REQUEST_CONTACT);
+        });
+    }
+
+    @SuppressLint("Range")
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST_CONTACT && resultCode==RESULT_OK){
+            Uri contactoUri = data.getData();
+            Cursor cursor = getContentResolver().query(contactoUri, new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},null,null,null);
+            if(cursor!=null && cursor.moveToFirst()){
+                ContactoSeleccionado = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                Contacto_A.setText(ContactoSeleccionado);
+                cursor.close();
+            }
+        }
     }
 
     private void SetearDatos(){
@@ -298,6 +370,7 @@ public class Actualizar_Nota extends AppCompatActivity implements AdapterView.On
         String horaActualizar = Hora_A.getText().toString();
         String notificacionActualizar = SpinnerNotificacion_A.getSelectedItem().toString();
         String categoriaActualizar = SpinnerCategoria_A.getSelectedItem().toString();
+        String contactoActualizar = Contacto_A.getText().toString();
         String estadoActualizar = Estado_nuevo.getText().toString();
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -314,6 +387,7 @@ public class Actualizar_Nota extends AppCompatActivity implements AdapterView.On
                     ds.getRef().child("fecha_nota").setValue(fechaActualizar);
                     ds.getRef().child("hora_nota").setValue(horaActualizar);
                     ds.getRef().child("notificacion").setValue(notificacionActualizar);
+                    ds.getRef().child("contacto").setValue(contactoActualizar);
                     ds.getRef().child("categoria").setValue(categoriaActualizar);
                     ds.getRef().child("estado").setValue(estadoActualizar);
                 }
